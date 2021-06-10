@@ -1,4 +1,4 @@
-# TypeScript basic skeleton
+# TypeScript DDD course lessons
 
 For now, you have all the code example available in this other repository: https://github.com/CodelyTV/typescript-ddd-example
 
