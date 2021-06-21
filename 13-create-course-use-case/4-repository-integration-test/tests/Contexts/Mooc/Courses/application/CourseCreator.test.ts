@@ -12,14 +12,13 @@ beforeEach(() => {
 
 describe('CourseCreator', () => {
   it('should create a valid course', async () => {
-
     const id = 'some-id';
     const name = 'some-name';
     const duration = 'some-duration';
 
-    const course = new Course({id, name, duration});
+    const course = new Course({ id, name, duration });
 
-    await creator.run(id, name, duration);
+    await creator.run({ id, name, duration });
 
     repository.assertLastSavedCourseIs(course);
   });
