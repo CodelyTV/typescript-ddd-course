@@ -13,7 +13,8 @@
   "scripts": {
     "dev:mooc:backend": "NODE_ENV=dev ts-node-dev --ignore-watch node_modules  ./src/apps/mooc/backend/start.ts",
     "lint": "tslint src/**/*.ts{,x}",
-    "test": "npm run test:features",
+    "test": "npm run test:unit && npm run test:features",
+    "test:unit": "NODE_ENV=test jest",
     "start:mooc:backend": "NODE_ENV=production node dist/src/apps/mooc/backend/start",
     "test:features": "npm run test:mooc:backend:features",
     "test:mooc:backend:features": "NODE_ENV=test cucumber-js -p mooc_backend",
