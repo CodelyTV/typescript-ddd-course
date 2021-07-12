@@ -16,7 +16,7 @@ export class CoursePutController implements Controller {
   async run(req: CoursePutRequest, res: Response) {
     try {
       const { id, name, duration } = req.body;
-      await this.courseCreator.run(id, name, duration);
+      await this.courseCreator.run({ id, name, duration });
       res.status(httpStatus.CREATED).send();
     } catch (error) {
       res.status(httpStatus.INTERNAL_SERVER_ERROR).send();
