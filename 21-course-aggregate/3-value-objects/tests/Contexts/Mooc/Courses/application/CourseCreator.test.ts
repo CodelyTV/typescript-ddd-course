@@ -2,6 +2,8 @@ import { CourseCreator } from '../../../../../src/Contexts/Mooc/Courses/applicat
 import { Course } from '../../../../../src/Contexts/Mooc/Courses/domain/Course';
 import { CourseRepositoryMock } from '../__mocks__/CourseRepositoryMock';
 import { CourseId } from '../../../../../src/Contexts/Mooc/Shared/domain/Courses/CourseId';
+import { CourseName } from '../../../../../src/Contexts/Mooc/Courses/domain/CourseName';
+import { CourseDuration } from '../../../../../src/Contexts/Mooc/Courses/domain/CourseDuration';
 
 let repository: CourseRepositoryMock;
 let creator: CourseCreator;
@@ -17,7 +19,7 @@ describe('CourseCreator', () => {
     const name = 'some-name';
     const duration = 'some-duration';
 
-    const course = new Course({ id: new CourseId(id), name, duration });
+    const course = new Course({ id: new CourseId(id), name: new CourseName(name), duration: new CourseDuration(duration) });
 
     await creator.run({ id, name, duration });
 
