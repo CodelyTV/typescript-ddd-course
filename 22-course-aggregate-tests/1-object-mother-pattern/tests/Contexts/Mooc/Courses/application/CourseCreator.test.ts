@@ -1,9 +1,7 @@
 import { CourseCreator } from '../../../../../src/Contexts/Mooc/Courses/application/CourseCreator';
-import { Course } from '../../../../../src/Contexts/Mooc/Courses/domain/Course';
+import { CourseMother } from '../domain/CourseMother';
 import { CourseRepositoryMock } from '../__mocks__/CourseRepositoryMock';
-import { CourseId } from '../../../../../src/Contexts/Mooc/Shared/domain/Courses/CourseId';
-import { CourseName } from '../../../../../src/Contexts/Mooc/Courses/domain/CourseName';
-import { CourseDuration } from '../../../../../src/Contexts/Mooc/Courses/domain/CourseDuration';
+import { CreateCourseRequestMother } from './CreateCourseRequestMother';
 
 let repository: CourseRepositoryMock;
 let creator: CourseCreator;
@@ -15,13 +13,11 @@ beforeEach(() => {
 
 describe('CourseCreator', () => {
   it('should create a valid course', async () => {
-    const id = '0766c602-d4d4-48b6-9d50-d3253123275e';
-    const name = 'some-name';
-    const duration = 'some-duration';
+    const request = CreateCourseRequestMother.random();
 
-    const course = new Course({ id: new CourseId(id), name: new CourseName(name), duration: new CourseDuration(duration) });
+    const course = CourseMother.fromRequest(request);
 
-    await creator.run({ id, name, duration });
+    await creator.run(request);
 
     repository.assertLastSavedCourseIs(course);
   });
