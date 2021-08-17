@@ -1,0 +1,16 @@
+services:
+  Mooc.ConnectionManager:
+    factory:
+      class: ../../../../../Contexts/Shared/infrastructure/persistence/mongo/MongoClientFactory
+      method: "createClient"
+    arguments: ["mooc"]
+
+  Mooc.Courses.domain.CourseRepository:
+    class: ../../../../../Contexts/Mooc/Courses/infrastructure/persistence/MongoCourseRepository
+    arguments: ["@Mooc.ConnectionManager"]
+
+  Mooc.Courses.application.CourseCreator:
+    class: ../../../../../Contexts/Mooc/Courses/application/CourseCreator
+    arguments: ["@Mooc.Courses.domain.CourseRepository"]
+  
+
