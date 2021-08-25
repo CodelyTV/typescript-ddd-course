@@ -9,7 +9,7 @@ import { CourseNameMother } from './CourseNameMother';
 
 export class CourseMother {
   static create(id: CourseId, name: CourseName, duration: CourseDuration): Course {
-    return new Course({ id, name, duration });
+    return new Course(id, name, duration);
   }
 
   static fromRequest(request: CreateCourseRequest): Course {
