@@ -1,17 +1,17 @@
 services:
-  Mooc.MongoConfig:
+  Mooc.TypeOrmConfig:
     factory:
-      class: ../../../../../Contexts/Mooc/Shared/infrastructure/persistence/mongo/MongoConfigFactory
+      class: ../../../../../Contexts/Mooc/Shared/infrastructure/persistence/postgre/TypeOrmConfigFactory
       method: 'createConfig'
 
   Mooc.ConnectionManager:
     factory:
-      class: ../../../../../Contexts/Shared/infrastructure/persistence/mongo/MongoClientFactory
+      class: ../../../../../Contexts/Shared/infrastructure/persistence/typeorm/TypeOrmClientFactory
       method: 'createClient'
-    arguments: ['mooc', '@Mooc.MongoConfig']
+    arguments: ['mooc', '@Mooc.TypeOrmConfig']
 
   Mooc.Courses.domain.CourseRepository:
-    class: ../../../../../Contexts/Mooc/Courses/infrastructure/persistence/MongoCourseRepository
+    class: ../../../../../Contexts/Mooc/Courses/infrastructure/persistence/TypeOrmCourseRepository
     arguments: ['@Mooc.ConnectionManager']
 
   Mooc.Courses.application.CourseCreator:

@@ -14,6 +14,38 @@ const moocConfig = convict({
       env: 'MONGO_URL',
       default: 'mongodb://localhost:27017/mooc-backend-dev'
     }
+  },
+  typeorm: {
+    host: {
+      doc: 'The database host',
+      format: String,
+      env: 'TYPEORM_HOST',
+      default: 'localhost'
+    },
+    port: {
+      doc: 'The database port',
+      format: Number,
+      env: 'TYPEORM_PORT',
+      default: 5432
+    },
+    username: {
+      doc: 'The database username',
+      format: String,
+      env: 'TYPEORM_USERNAME',
+      default: 'codely'
+    },
+    password: {
+      doc: 'The database password',
+      format: String,
+      env: 'TYPEORM_PASSWORD',
+      default: 'codely'
+    },
+    database: {
+      doc: 'The database name',
+      format: String,
+      env: 'TYPEORM_DATABASE',
+      default: 'test'
+    }
   }
 });
 
