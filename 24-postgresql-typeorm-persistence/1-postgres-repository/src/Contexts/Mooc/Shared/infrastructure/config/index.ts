@@ -44,7 +44,7 @@ const moocConfig = convict({
       doc: 'The database name',
       format: String,
       env: 'TYPEORM_DATABASE',
-      default: 'test'
+      default: 'mooc-backend-dev'
     }
   }
 });
