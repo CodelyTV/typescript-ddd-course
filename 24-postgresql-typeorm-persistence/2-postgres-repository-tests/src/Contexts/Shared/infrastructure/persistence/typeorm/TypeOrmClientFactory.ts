@@ -19,7 +19,6 @@ export class TypeOrmClientFactory {
 
       return connection;
     } catch (error) {
-      console.log('error', error);
       return getConnection(contextName);
     }
   }
