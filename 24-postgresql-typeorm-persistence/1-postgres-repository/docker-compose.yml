@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:5.0.0
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/dev
+    volumes:
+      - ./data/mongo:/data/db:delegated
+    ports:
+      - 27017:27017
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=codely
+      - POSTGRES_USER=codely
+      - POSTGRES_DB=test
+    ports:
+      - '5432:5432'
+    restart: always
