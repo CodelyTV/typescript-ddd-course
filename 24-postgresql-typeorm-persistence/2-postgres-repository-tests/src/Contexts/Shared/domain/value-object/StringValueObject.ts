@@ -1,11 +1,7 @@
-export abstract class StringValueObject {
-    readonly value: string;
-  
-    constructor(value: string) {
-      this.value = value;
-    }
-  
-    toString(): string {
-      return this.value;
-    }
+import { ValueObject } from "./ValueObject";
+
+export abstract class StringValueObject extends ValueObject<string> {
+  toString(): string {
+    return this.value;
   }
+}
