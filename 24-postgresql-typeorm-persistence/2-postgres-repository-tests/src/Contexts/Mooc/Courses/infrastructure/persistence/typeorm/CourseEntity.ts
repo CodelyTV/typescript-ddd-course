@@ -1,4 +1,5 @@
 import { EntitySchema } from 'typeorm';
+import { ValueObjectTransformer } from '../../../../../Shared/infrastructure/persistence/typeorm/ValueObjectTransformer';
 import { CourseId } from '../../../../Shared/domain/Courses/CourseId';
 import { Course } from '../../../domain/Course';
 import { CourseDuration } from '../../../domain/CourseDuration';
@@ -12,26 +13,15 @@ export const CourseEntity = new EntitySchema<Course>({
     id: {
       type: String,
       primary: true,
-      transformer: {
-        to: (value: CourseId): string => value.value,
-        from: (value: string): CourseId => {
-          return new CourseId(value);
-        }
-      }
+      transformer: ValueObjectTransformer(CourseId)
     },
     name: {
       type: String,
-      transformer: {
-        to: (value: CourseName): string => value.value,
-        from: (value: string): CourseName => new CourseName(value)
-      }
+      transformer: ValueObjectTransformer(CourseName)
     },
     duration: {
       type: String,
-      transformer: {
-        to: (value: CourseDuration): string => value.value,
-        from: (value: string): CourseDuration => new CourseDuration(value)
-      }
+      transformer: ValueObjectTransformer(CourseDuration)
     }
   }
 });
