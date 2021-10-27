@@ -31,7 +31,7 @@ export class Server {
 
     router.use((err: Error, req: Request, res: Response, next: Function) => {
       console.log(err);
-      res.status(httpStatus.INTERNAL_SERVER_ERROR).send(err.message);
+      res.status(httpStatus.INTERNAL_SERVER_ERROR).send();
     });
   }
 
