@@ -4,6 +4,6 @@ services:
     class: ../../controllers/StatusGetController
     arguments: []
 
-  Apps.mooc.controllers.CoursePutController:
-    class: ../../controllers/CoursePutController
-    arguments: [""]
+  Apps.mooc.controllers.CoursesPutController:
+    class: ../../controllers/CoursesPutController
+    arguments: []
