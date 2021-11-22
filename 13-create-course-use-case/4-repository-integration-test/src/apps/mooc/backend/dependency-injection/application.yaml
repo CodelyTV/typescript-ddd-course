@@ -1,3 +1,0 @@
-imports:
-  - { resource: ./apps/application.yaml }
-  - { resource: ./Courses/application.yaml }
