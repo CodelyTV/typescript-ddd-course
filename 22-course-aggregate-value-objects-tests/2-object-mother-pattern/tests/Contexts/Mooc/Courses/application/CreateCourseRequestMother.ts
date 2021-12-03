@@ -14,4 +14,12 @@ export class CreateCourseRequestMother {
   static random(): CreateCourseRequest {
     return this.create(CourseIdMother.random(), CourseNameMother.random(), CourseDurationMother.random());
   }
+
+  static invalidRequest(): CreateCourseRequest {
+    return {
+      id: CourseIdMother.random().value,
+      name: CourseNameMother.invalidName(),
+      duration: CourseDurationMother.random().value
+    };
+  }
 }
