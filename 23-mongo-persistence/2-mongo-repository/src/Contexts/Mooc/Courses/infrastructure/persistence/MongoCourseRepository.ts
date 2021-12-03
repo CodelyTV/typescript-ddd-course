@@ -4,7 +4,7 @@ import { CourseId } from '../../../Shared/domain/Courses/CourseId';
 import { Course } from '../../domain/Course';
 import { CourseRepository } from '../../domain/CourseRepository';
 
-export type CourseDocument =  {
+interface CourseDocument {
   _id: string;
   name: string;
   duration: string;

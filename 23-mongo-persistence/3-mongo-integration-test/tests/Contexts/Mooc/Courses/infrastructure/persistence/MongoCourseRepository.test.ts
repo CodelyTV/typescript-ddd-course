@@ -11,7 +11,6 @@ beforeEach(async () => {
 });
 
 afterAll(async () => {
-  await (await environmentArranger).arrange();
   await (await environmentArranger).close();
 });
 

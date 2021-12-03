@@ -1,3 +1,6 @@
-type MongoConfig = { url: string };
-
-export default MongoConfig;
+interface MongoConfig {
+    url: string;
+  }
+  
+  export default MongoConfig;
+  
