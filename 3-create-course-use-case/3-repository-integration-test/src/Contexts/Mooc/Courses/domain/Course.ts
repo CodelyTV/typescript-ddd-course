@@ -3,9 +3,9 @@ export class Course {
   readonly name: string;
   readonly duration: string;
 
-  constructor(id: string, name: string, duration: string) {
-    this.id = id;
-    this.name = name;
-    this.duration = duration;
+  constructor(params: { id: string, name: string, duration: string }) {
+    this.id = params.id;
+    this.name = params.name;
+    this.duration = params.duration;
   }
 }

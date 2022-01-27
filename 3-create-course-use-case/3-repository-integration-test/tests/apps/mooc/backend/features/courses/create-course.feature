@@ -7,6 +7,7 @@ Feature: Create a new course
     Given I send a PUT request to "/courses/ef8ac118-8d7f-49cc-abec-78e0d05af80a" with body:
     """
     {
+      "id": "ef8ac118-8d7f-49cc-abec-78e0d05af80a",
       "name": "The best course",
       "duration": "5 hours"
     }
