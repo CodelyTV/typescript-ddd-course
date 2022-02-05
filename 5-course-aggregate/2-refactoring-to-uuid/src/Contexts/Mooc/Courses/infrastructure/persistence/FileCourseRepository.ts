@@ -7,7 +7,7 @@ export class FileCourseRepository implements CourseRepository {
   private FILE_PATH = `${__dirname}/courses`;
 
   async save(course: Course): Promise<void> {
-    fs.promises.writeFile(this.filePath(course.id), serialize(course));
+    fs.promises.writeFile(this.filePath(course.id.value), serialize(course));
   }
 
   async search(courseId: string): Promise<Course> {
