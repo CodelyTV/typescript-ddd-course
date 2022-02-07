@@ -21,7 +21,7 @@ export class MongoClientFactory {
   }
 
   private static async createAndConnectClient(config: MongoConfig): Promise<MongoClient> {
-    const client = new MongoClient(config.url);
+    const client = new MongoClient(config.url, { ignoreUndefined: true });
 
     await client.connect();
 
