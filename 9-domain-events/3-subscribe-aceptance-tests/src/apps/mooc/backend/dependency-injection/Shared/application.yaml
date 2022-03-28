@@ -1,0 +1,6 @@
+services:
+
+  Mooc.Shared.domain.EventBus:
+    class: ../../../../../Contexts/Shared/infrastructure/EventBus/InMemory/InMemoryAsyncEventBus
+    arguments: []
+
