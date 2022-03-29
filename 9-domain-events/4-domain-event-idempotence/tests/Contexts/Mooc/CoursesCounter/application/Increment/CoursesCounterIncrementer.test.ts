@@ -39,4 +39,14 @@ describe('CoursesCounter Incrementer', () => {
     repository.assertLastCoursesCounterSaved(expected);
     eventBus.assertLastPublishedEventIs(expectedEvent);
   });
+
+  it('should not increment an already incremented counter', async () => {
+    const existingCounter = CoursesCounterMother.random();
+    repository.returnOnSearch(existingCounter);
+    const courseId = existingCounter.existingCourses[0];
+
+    await incrementer.run(courseId);
+
+    repository.assertNotSave();
+  });
 });
