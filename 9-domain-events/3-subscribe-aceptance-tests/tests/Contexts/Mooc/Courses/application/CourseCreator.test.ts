@@ -3,7 +3,7 @@ import { CourseMother } from '../domain/CourseMother';
 import { CourseNameLengthExceeded } from '../../../../../src/Contexts/Mooc/Courses/domain/CourseNameLengthExceeded';
 import { CourseRepositoryMock } from '../__mocks__/CourseRepositoryMock';
 import { CreateCourseRequestMother } from './CreateCourseRequestMother';
-import EventBusMock from '../__mocks__/EventBusMock';
+import EventBusMock from '../../Shared/domain/EventBusMock';
 import { CourseCreatedDomainEventMother } from '../domain/CourseCreatedDomainEventMother';
 
 let repository: CourseRepositoryMock;

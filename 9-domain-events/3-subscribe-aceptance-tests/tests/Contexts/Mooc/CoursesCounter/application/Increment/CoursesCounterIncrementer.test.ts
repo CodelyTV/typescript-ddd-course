@@ -1,6 +1,6 @@
 import { CoursesCounterIncrementer } from '../../../../../../src/Contexts/Mooc/CoursesCounter/application/Increment/CoursesCounterIncrementer';
 import { CoursesCounter } from '../../../../../../src/Contexts/Mooc/CoursesCounter/domain/CoursesCounter';
-import EventBusMock from '../../../Courses/__mocks__/EventBusMock';
+import EventBusMock from '../../../Shared/domain/EventBusMock';
 import { CourseIdMother } from '../../../Shared/domain/Courses/CourseIdMother';
 import { CoursesCounterIncrementedDomainEventMother } from '../../domain/CoursesCounterIncrementedDomainEventMother';
 import { CoursesCounterMother } from '../../domain/CoursesCounterMother';
