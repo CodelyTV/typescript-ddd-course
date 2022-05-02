@@ -2,17 +2,17 @@ import { DomainEvent } from '../../../domain/DomainEvent';
 import { EventBus } from '../../../domain/EventBus';
 import { DomainEventSubscribers } from '../DomainEventSubscribers';
 import { DomainEventJsonSerializer } from '../DomainEventJsonSerializer';
-import { RabbitMQConnection } from './RabbitMqConnection';
+import { RabbitMqConnection } from './RabbitMqConnection';
 import { DomainEventFailoverPublisher } from '../DomainEventFailoverPublisher/DomainEventFailoverPublisher';
 
 export class RabbitMQEventBus implements EventBus {
   private failoverPublisher: DomainEventFailoverPublisher;
-  private connection: RabbitMQConnection;
+  private connection: RabbitMqConnection;
   private exchange: string;
 
   constructor(params: {
     failoverPublisher: DomainEventFailoverPublisher;
-    connection: RabbitMQConnection;
+    connection: RabbitMqConnection;
     exchange: string;
   }) {
     const { failoverPublisher, connection, exchange } = params;

@@ -5,6 +5,11 @@ services:
       class: ../../../../../Contexts/Mooc/Shared/infrastructure/persistence/mongo/MongoConfigFactory
       method: 'createConfig'
 
+  Mooc.Shared.RabbitMQConfig:
+    factory:
+      class: ../../../../../Contexts/Mooc/Shared/infrastructure/RabbitMQ/RabbitMQConfigFactory
+      method: 'createConfig'
+
   Mooc.Shared.domain.EventBus:
     class: ../../../../../Contexts/Shared/infrastructure/EventBus/InMemory/InMemoryAsyncEventBus
     arguments: []
@@ -14,3 +19,11 @@ services:
       class: ../../../../../Contexts/Shared/infrastructure/persistence/mongo/MongoClientFactory
       method: 'createClient'
     arguments: ['mooc', '@Mooc.Shared.MongoConfig']
+
+  Mooc.Shared.RabbitMQQueueFormatter:
+    class: ../../../../../Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMQqueueFormatter
+    arguments: ['mooc']
+
+  Mooc.Shared.RabbitMQConnection:
+    class: ../../../../../Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMqConnection
+    arguments: ['@Mooc.Shared.RabbitMQConfig']
