@@ -28,7 +28,7 @@ export class DomainEventDeserializer extends Map<string, DomainEventClass> {
     return eventClass.fromPrimitives({
       id: eventData.attributes.id,
       attributes: eventData.attributes,
-      occurredOn: eventData.occurred_on,
+      occurredOn: new Date(eventData.occurred_on),
       eventId: eventData.id
     });
   }

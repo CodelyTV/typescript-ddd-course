@@ -14,6 +14,7 @@ export class CoursesCounterIncrementedDomainEvent extends DomainEvent {
 
   toPrimitives() {
     return {
+      id: this.aggregateId,
       total: this.total,
       eventName: CoursesCounterIncrementedDomainEvent.EVENT_NAME
     };
