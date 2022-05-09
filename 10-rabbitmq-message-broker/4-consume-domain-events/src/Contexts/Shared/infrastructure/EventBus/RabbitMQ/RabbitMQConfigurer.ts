@@ -16,7 +16,7 @@ export class RabbitMQConfigurer {
 
   private async addQueue(subscriber: DomainEventSubscriber<DomainEvent>, exchange: string) {
     const routingKeys = subscriber.subscribedTo().map(event => event.EVENT_NAME);
-    const queue = this.queueNameFormatter.format(subscriber.constructor.name);
+    const queue = this.queueNameFormatter.format(subscriber);
 
     await this.connection.queue({ routingKeys, name: queue, exchange });
   }

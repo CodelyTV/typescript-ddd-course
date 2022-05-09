@@ -22,7 +22,7 @@ export class DomainEventDeserializer extends Map<string, DomainEventClass> {
     const eventClass = super.get(eventName);
 
     if (!eventClass) {
-      return;
+      throw Error(`DomainEvent mapping not found for event ${eventName}`);
     }
 
     return eventClass.fromPrimitives({

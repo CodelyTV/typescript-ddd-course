@@ -4,25 +4,38 @@ import { DomainEventSubscribers } from '../DomainEventSubscribers';
 import { DomainEventJsonSerializer } from '../DomainEventJsonSerializer';
 import { RabbitMqConnection } from './RabbitMqConnection';
 import { DomainEventFailoverPublisher } from '../DomainEventFailoverPublisher/DomainEventFailoverPublisher';
+import { RabbitMQqueueFormatter } from './RabbitMQqueueFormatter';
+import { RabbitMQConsumer } from './RabbitMQConsumer';
+import { DomainEventDeserializer } from '../DomainEventDeserializer';
 
 export class RabbitMQEventBus implements EventBus {
   private failoverPublisher: DomainEventFailoverPublisher;
   private connection: RabbitMqConnection;
   private exchange: string;
+  private queueNameFormatter: RabbitMQqueueFormatter;
 
   constructor(params: {
     failoverPublisher: DomainEventFailoverPublisher;
     connection: RabbitMqConnection;
     exchange: string;
+    queueNameFormatter: RabbitMQqueueFormatter;
   }) {
     const { failoverPublisher, connection, exchange } = params;
     this.failoverPublisher = failoverPublisher;
     this.connection = connection;
     this.exchange = exchange;
+    this.queueNameFormatter = params.queueNameFormatter;
   }
 
-  addSubscribers(subscribers: DomainEventSubscribers): void {
-    throw new Error('Method not implemented.');
+  async addSubscribers(subscribers: DomainEventSubscribers): Promise<void> {
+    const deserializer = DomainEventDeserializer.configure(subscribers);
+
+    for (const subscriber of subscribers.items) {
+      const queueName = this.queueNameFormatter.format(subscriber);
+      const rabbitMQConsumer = new RabbitMQConsumer(subscriber, deserializer);
+
+      await this.connection.consume(queueName, rabbitMQConsumer);
+    }
   }
 
   async publish(events: Array<DomainEvent>): Promise<void> {
