@@ -5,7 +5,7 @@ import { ExchangeSetting } from './ExchangeSetting';
 export class RabbitMQConnection {
   protected connectionSettings: ConnectionSettings;
 
-  protected channel?: amqplib.Channel;
+  protected channel?: amqplib.ConfirmChannel;
   protected connection?: amqplib.Connection;
 
   constructor(params: { connectionSettings: ConnectionSettings; exchangeSettings: ExchangeSetting }) {
@@ -38,8 +38,8 @@ export class RabbitMQConnection {
     return connection;
   }
 
-  private async amqpChannel(): Promise<amqplib.Channel> {
-    const channel = await this.connection!.createChannel();
+  private async amqpChannel(): Promise<amqplib.ConfirmChannel> {
+    const channel = await this.connection!.createConfirmChannel();
     await channel.prefetch(1);
 
     return channel;
@@ -52,7 +52,11 @@ export class RabbitMQConnection {
     options: { messageId: string; contentType: string; contentEncoding: string };
   }) {
     const { routingKey, content, options, exchange } = params;
-    return this.channel!.publish(exchange, routingKey, content, options);
+    return new Promise((resolve: Function, reject: Function) => {
+      this.channel!.publish(exchange, routingKey, content, options, (error: any) =>
+        error ? reject(error) : resolve()
+      );
+    });
   }
 
   async close() {
