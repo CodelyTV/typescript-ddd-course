@@ -13,28 +13,32 @@ export class RabbitMQEventBus implements EventBus {
   private connection: RabbitMqConnection;
   private exchange: string;
   private queueNameFormatter: RabbitMQqueueFormatter;
+  private maxRetries: Number;
 
   constructor(params: {
     failoverPublisher: DomainEventFailoverPublisher;
     connection: RabbitMqConnection;
     exchange: string;
     queueNameFormatter: RabbitMQqueueFormatter;
+    maxRetries: Number;
   }) {
     const { failoverPublisher, connection, exchange } = params;
     this.failoverPublisher = failoverPublisher;
     this.connection = connection;
     this.exchange = exchange;
     this.queueNameFormatter = params.queueNameFormatter;
+    this.maxRetries = params.maxRetries;
   }
 
   async addSubscribers(subscribers: DomainEventSubscribers): Promise<void> {
     const deserializer = DomainEventDeserializer.configure(subscribers);
+    const maxRetries = this.maxRetries;
 
     for (const subscriber of subscribers.items) {
       const queueName = this.queueNameFormatter.format(subscriber);
-      const rabbitMQConsumer = new RabbitMQConsumer(subscriber, deserializer);
+      const rabbitMQConsumer = new RabbitMQConsumer({ subscriber, deserializer, maxRetries });
 
-      await this.connection.consume(queueName, rabbitMQConsumer);
+      await this.connection.consume(this.exchange, queueName, rabbitMQConsumer);
     }
   }
 
