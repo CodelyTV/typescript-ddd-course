@@ -1,4 +1,4 @@
-import moocConfig from '../../../../Contexts/Mooc/Shared/infrastructure/config';
+import { RabbitMQConfig } from '../../../../Contexts/Mooc/Shared/infrastructure/RabbitMQ/RabbitMQConfigFactory';
 import { DomainEventSubscribers } from '../../../../Contexts/Shared/infrastructure/EventBus/DomainEventSubscribers';
 import { RabbitMQConfigurer } from '../../../../Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMQConfigurer';
 import { RabbitMqConnection } from '../../../../Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMqConnection';
@@ -8,14 +8,15 @@ import container from '../dependency-injection';
 class ConfigureRabbitMQCommand {
   static async run() {
     const connection = container.get<RabbitMqConnection>('Mooc.Shared.RabbitMQConnection');
+    const nameFormatter = container.get<RabbitMQqueueFormatter>('Mooc.Shared.RabbitMQQueueFormatter');
+    const { exchangeSettings, retryTtl } = container.get<RabbitMQConfig>('Mooc.Shared.RabbitMQConfig');
+
     await connection.connect();
 
-    const nameFormatter = container.get<RabbitMQqueueFormatter>('Mooc.Shared.RabbitMQQueueFormatter');
-    const configurer = new RabbitMQConfigurer(connection, nameFormatter);
+    const configurer = new RabbitMQConfigurer(connection, nameFormatter, retryTtl);
     const subscribers = DomainEventSubscribers.from(container).items;
-    const exchange = moocConfig.get('rabbitmq').exchangeSettings.name;
 
-    await configurer.configure({ exchange, subscribers });
+    await configurer.configure({ exchange: exchangeSettings.name, subscribers });
   }
 }
 

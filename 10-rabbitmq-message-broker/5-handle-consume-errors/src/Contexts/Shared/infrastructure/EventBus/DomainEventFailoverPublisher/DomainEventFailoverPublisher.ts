@@ -6,10 +6,14 @@ import { DomainEventJsonSerializer } from '../DomainEventJsonSerializer';
 export class DomainEventFailoverPublisher {
   static collectionName = 'DomainEvents';
 
-  constructor(private _client: Promise<MongoClient>, private deserializer: DomainEventDeserializer) {}
+  constructor(private client: Promise<MongoClient>, private deserializer?: DomainEventDeserializer) {}
 
   protected async collection(): Promise<Collection> {
-    return (await this._client).db().collection(DomainEventFailoverPublisher.collectionName);
+    return (await this.client).db().collection(DomainEventFailoverPublisher.collectionName);
+  }
+
+  setDeserializer(deserializer: DomainEventDeserializer) {
+    this.deserializer = deserializer;
   }
 
   async publish(event: DomainEvent): Promise<void> {
@@ -25,8 +29,11 @@ export class DomainEventFailoverPublisher {
   async consume(): Promise<Array<DomainEvent>> {
     const collection = await this.collection();
     const documents = await collection.find().limit(200).toArray();
+    if (!this.deserializer) {
+      throw new Error('Deserializer has not been set yet');
+    }
 
-    const events = documents.map(document => this.deserializer.deserialize(document.event));
+    const events = documents.map(document => this.deserializer!.deserialize(document.event));
 
     return events.filter(Boolean) as Array<DomainEvent>;
   }

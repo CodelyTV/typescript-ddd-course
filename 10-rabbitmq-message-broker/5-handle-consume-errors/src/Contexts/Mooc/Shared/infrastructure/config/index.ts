@@ -95,6 +95,18 @@ const moocConfig = convict({
         env: 'RABBITMQ_EXCHANGE_NAME',
         default: 'domain_events'
       }
+    },
+    maxRetries: {
+      doc: 'Max number of retries for each message',
+      format: Number,
+      env: 'RABBITMQ_MAX_RETRIES',
+      default: 3
+    },
+    retryTtl: {
+      doc: 'Ttl for messages in the retry queue',
+      format: Number,
+      env: 'RABBITMQ_RETRY_TTL',
+      default: 1000
     }
   }
 });

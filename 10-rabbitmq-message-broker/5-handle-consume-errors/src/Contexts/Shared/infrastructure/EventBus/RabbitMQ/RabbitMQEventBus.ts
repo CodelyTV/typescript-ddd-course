@@ -32,6 +32,7 @@ export class RabbitMQEventBus implements EventBus {
 
   async addSubscribers(subscribers: DomainEventSubscribers): Promise<void> {
     const deserializer = DomainEventDeserializer.configure(subscribers);
+    this.failoverPublisher.setDeserializer(deserializer);
     const maxRetries = this.maxRetries;
 
     for (const subscriber of subscribers.items) {
