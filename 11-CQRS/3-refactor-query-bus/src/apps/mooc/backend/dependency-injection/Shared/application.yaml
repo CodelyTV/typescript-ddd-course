@@ -50,3 +50,11 @@ services:
   Mooc.Shared.domain.CommandBus:
     class: ../../../../../Contexts/Shared/infrastructure/CommandBus/InMemoryCommandBus
     arguments: ['@Mooc.Shared.CommandHandlers']
+
+  Mooc.Shared.QueryHandlers:
+    class: ../../../../../Contexts/Shared/infrastructure/QueryBus/QueryHandlers
+    arguments: ['!tagged queryHandler']
+
+  Mooc.Shared.domain.QueryBus:
+    class: ../../../../../Contexts/Shared/infrastructure/QueryBus/InMemoryQueryBus
+    arguments: ['@Mooc.Shared.QueryHandlers']

@@ -1,18 +1,20 @@
 import { Request, Response } from 'express';
-import { CoursesCounterFinder } from '../../../../Contexts/Mooc/CoursesCounter/application/Find/CoursesCounterFinder';
-import { CoursesCounterNotExist } from '../../../../Contexts/Mooc/CoursesCounter/domain/CoursesCounterNotExist';
-import { Controller } from './Controller';
 import httpStatus from 'http-status';
+import { FindCoursesCounterQuery } from '../../../../Contexts/Mooc/CoursesCounter/application/Find/FindCoursesCounterQuery';
+import { FindCoursesCounterResponse } from '../../../../Contexts/Mooc/CoursesCounter/application/Find/FindCoursesCounterResponse';
+import { CoursesCounterNotExist } from '../../../../Contexts/Mooc/CoursesCounter/domain/CoursesCounterNotExist';
+import { QueryBus } from '../../../../Contexts/Shared/domain/QueryBus';
+import { Controller } from './Controller';
 
 export class CoursesCounterGetController implements Controller {
-  constructor(private coursesCounterFinder: CoursesCounterFinder) {}
+  constructor(private queryBus: QueryBus) {}
   async run(req: Request, res: Response): Promise<void> {
     try {
-      const count = await this.coursesCounterFinder.run();
+      const query = new FindCoursesCounterQuery();
+      const { total } = await this.queryBus.ask<FindCoursesCounterResponse>(query);
 
-      res.json({ total: count });
+      res.json({ total });
     } catch (e) {
-      console.log(e)
       if (e instanceof CoursesCounterNotExist) {
         res.sendStatus(httpStatus.NOT_FOUND);
       } else {

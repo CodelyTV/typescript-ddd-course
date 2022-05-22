@@ -1,5 +1,4 @@
 services:
-
   Apps.mooc.controllers.StatusGetController:
     class: ../../controllers/StatusGetController
     arguments: []
@@ -10,4 +9,4 @@ services:
 
   Apps.mooc.controllers.CoursesCounterGetController:
     class: ../../controllers/CoursesCounterGetController
-    arguments: ["@Mooc.CoursesCounter.CoursesCounterFinder"]
+    arguments: ['@Mooc.Shared.domain.QueryBus']
