@@ -2,27 +2,30 @@ import { CourseCreator } from '../../../../../src/Contexts/Mooc/Courses/applicat
 import { CourseMother } from '../domain/CourseMother';
 import { CourseNameLengthExceeded } from '../../../../../src/Contexts/Mooc/Courses/domain/CourseNameLengthExceeded';
 import { CourseRepositoryMock } from '../__mocks__/CourseRepositoryMock';
-import { CreateCourseRequestMother } from './CreateCourseRequestMother';
 import EventBusMock from '../../Shared/domain/EventBusMock';
 import { CourseCreatedDomainEventMother } from '../domain/CourseCreatedDomainEventMother';
+import { CreateCourseCommandHandler } from '../../../../../src/Contexts/Mooc/Courses/application/CreateCourseCommandHandler';
+import { CreateCourseCommandMother } from './CreateCourseCommandMother';
 
 let repository: CourseRepositoryMock;
 let creator: CourseCreator;
 let eventBus: EventBusMock;
+let handler: CreateCourseCommandHandler;
 
 beforeEach(() => {
   repository = new CourseRepositoryMock();
   eventBus = new EventBusMock();
   creator = new CourseCreator(repository, eventBus);
+  handler = new CreateCourseCommandHandler(creator);
 });
 
-describe('CourseCreator', () => {
+describe('CreateCourseCommandHandler', () => {
   it('should create a valid course', async () => {
-    const request = CreateCourseRequestMother.random();
-    const course = CourseMother.fromRequest(request);
+    const command = CreateCourseCommandMother.random();
+    const course = CourseMother.from(command);
     const domainEvent = CourseCreatedDomainEventMother.fromCourse(course);
 
-    await creator.run(request);
+    await handler.handle(command);
 
     repository.assertSaveHaveBeenCalledWith(course);
     eventBus.assertLastPublishedEventIs(domainEvent);
@@ -30,11 +33,11 @@ describe('CourseCreator', () => {
 
   it('should throw error if course name length is exceeded', async () => {
     expect(() => {
-      const request = CreateCourseRequestMother.invalidRequest();
+      const command = CreateCourseCommandMother.invalid();
 
-      const course = CourseMother.fromRequest(request);
+      const course = CourseMother.from(command);
 
-      creator.run(request);
+      handler.handle(command);;
 
       repository.assertSaveHaveBeenCalledWith(course);
     }).toThrow(CourseNameLengthExceeded);

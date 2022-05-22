@@ -1,7 +1,7 @@
 import { Course } from '../../../../../src/Contexts/Mooc/Courses/domain/Course';
-import { CreateCourseRequest } from '../../../../../src/Contexts/Mooc/Courses/application/CreateCourseRequest';
 import { CourseDuration } from '../../../../../src/Contexts/Mooc/Courses/domain/CourseDuration';
 import { CourseName } from '../../../../../src/Contexts/Mooc/Courses/domain/CourseName';
+import { CreateCourseCommand } from '../../../../../src/Contexts/Mooc/Courses/domain/CreateCourseCommand';
 import { CourseId } from '../../../../../src/Contexts/Mooc/Shared/domain/Courses/CourseId';
 import { CourseIdMother } from '../../Shared/domain/Courses/CourseIdMother';
 import { CourseDurationMother } from './CourseDurationMother';
@@ -12,11 +12,11 @@ export class CourseMother {
     return new Course(id, name, duration);
   }
 
-  static fromRequest(request: CreateCourseRequest): Course {
+  static from(command: CreateCourseCommand): Course {
     return this.create(
-      CourseIdMother.create(request.id),
-      CourseNameMother.create(request.name),
-      CourseDurationMother.create(request.duration)
+      CourseIdMother.create(command.id),
+      CourseNameMother.create(command.name),
+      CourseDurationMother.create(command.duration)
     );
   }
 
