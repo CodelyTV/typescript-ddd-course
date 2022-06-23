@@ -1,0 +1,5 @@
+services:
+
+  Apps.Backoffice.Backend.controllers.StatusGetController:
+    class: ../../controllers/StatusGetController
+    arguments: []
