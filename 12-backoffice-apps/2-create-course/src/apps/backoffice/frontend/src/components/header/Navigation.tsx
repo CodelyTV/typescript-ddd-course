@@ -15,7 +15,7 @@ function Navigation() {
                 <NavLink to="#" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
                     Usuarios
                 </NavLink>
-                <NavLink to="#" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
+                <NavLink to="/courses" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4">
                     Cursos
                 </NavLink>
                 <NavLink to="#" className="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white">

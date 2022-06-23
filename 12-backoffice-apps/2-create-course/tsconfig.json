@@ -17,5 +17,8 @@
     "src/**/**.ts",
     "tests/**/**.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules",
+    "src/apps/backoffice/frontend"
+  ]
 }
