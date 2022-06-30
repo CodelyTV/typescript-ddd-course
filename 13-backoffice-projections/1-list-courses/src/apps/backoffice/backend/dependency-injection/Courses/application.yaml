@@ -1,24 +1,38 @@
 services:
-  Backoffice.Courses.domain.CourseRepository:
+  Mooc.Courses.domain.CourseRepository:
     class: ../../../../../Contexts/Mooc/Courses/infrastructure/persistence/MongoCourseRepository
     arguments: ['@Backoffice.Shared.ConnectionManager']
 
-  Backoffice.Courses.application.CourseCreator:
+  Mooc.Courses.application.CourseCreator:
     class: ../../../../../Contexts/Mooc/Courses/application/Create/CourseCreator
-    arguments: ['@Backoffice.Courses.domain.CourseRepository', '@Backoffice.Shared.domain.EventBus']
+    arguments: ['@Mooc.Courses.domain.CourseRepository', '@Backoffice.Shared.domain.EventBus']
 
-  Backoffice.courses.CreateCourseCommandHandler:
+  Mooc.courses.CreateCourseCommandHandler:
     class: ../../../../../Contexts/Mooc/Courses/application/Create/CreateCourseCommandHandler
-    arguments: ['@Backoffice.Courses.application.CourseCreator']
+    arguments: ['@Mooc.Courses.application.CourseCreator']
     tags:
       - { name: 'commandHandler' }
 
-  Backoffice.Courses.application.CoursesFinder:
+  Mooc.Courses.application.CoursesFinder:
     class: ../../../../../Contexts/Mooc/Courses/application/SearchAll/CoursesFinder
-    arguments: ['@Backoffice.Courses.domain.CourseRepository']
+    arguments: ['@Mooc.Courses.domain.CourseRepository']
+
+  Mooc.courses.SearchAllCoursesQueryHandler:
+    class: ../../../../../Contexts/Mooc/Courses/application/SearchAll/SearchAllCoursesQueryHandler
+    arguments: ['@Mooc.Courses.application.CoursesFinder']
+    tags:
+      - { name: 'moocQueryHandler' }
+
+  Backoffice.Courses.application.CoursesFinder:
+    class: ../../../../../Contexts/Backoffice/Courses/application/SearchAll/CoursesFinder
+    arguments: ['@Backoffice.Courses.domain.BackofficeCourseRepository']
 
   Backoffice.courses.SearchAllCoursesQueryHandler:
-    class: ../../../../../Contexts/Mooc/Courses/application/SearchAll/SearchAllCoursesQueryHandler
+    class: ../../../../../Contexts/Backoffice/Courses/application/SearchAll/SearchAllCoursesQueryHandler
     arguments: ['@Backoffice.Courses.application.CoursesFinder']
     tags:
       - { name: 'queryHandler' }
+
+  Backoffice.Courses.domain.BackofficeCourseRepository:
+    class: ../../../../../Contexts/Backoffice/Courses/infrastructure/persistence/MongoBackofficeCourseRepository
+    arguments: ['@Backoffice.Shared.ConnectionManager', '@Mooc.Shared.domain.QueryBus']

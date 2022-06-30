@@ -62,3 +62,11 @@ services:
   Backoffice.Shared.domain.QueryBus:
     class: ../../../../../Contexts/Shared/infrastructure/QueryBus/InMemoryQueryBus
     arguments: ['@Backoffice.Shared.QueryHandlers']
+  
+  Mooc.Shared.QueryHandlers:
+    class: ../../../../../Contexts/Shared/infrastructure/QueryBus/QueryHandlers
+    arguments: ['!tagged moocQueryHandler']
+
+  Mooc.Shared.domain.QueryBus:
+    class: ../../../../../Contexts/Shared/infrastructure/QueryBus/InMemoryQueryBus
+    arguments: ['@Mooc.Shared.QueryHandlers']
