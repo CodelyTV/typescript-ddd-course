@@ -5,7 +5,3 @@ services:
   Backoffice.EnvironmentArranger:
     class: ../../../../../tests/Contexts/Shared/infrastructure/mongo/MongoEnvironmentArranger
     arguments: ['@Backoffice.Shared.ConnectionManager']
-
-  Mooc.EnvironmentArranger:
-    class: ../../../../../tests/Contexts/Shared/infrastructure/mongo/MongoEnvironmentArranger
-    arguments: ['@Backoffice.Shared.ConnectionManager']

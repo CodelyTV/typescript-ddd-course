@@ -13,16 +13,6 @@ services:
     tags:
       - { name: 'commandHandler' }
 
-  Mooc.Courses.application.CoursesFinder:
-    class: ../../../../../Contexts/Mooc/Courses/application/SearchAll/CoursesFinder
-    arguments: ['@Mooc.Courses.domain.CourseRepository']
-
-  Mooc.courses.SearchAllCoursesQueryHandler:
-    class: ../../../../../Contexts/Mooc/Courses/application/SearchAll/SearchAllCoursesQueryHandler
-    arguments: ['@Mooc.Courses.application.CoursesFinder']
-    tags:
-      - { name: 'moocQueryHandler' }
-
   Backoffice.Courses.application.CoursesFinder:
     class: ../../../../../Contexts/Backoffice/Courses/application/SearchAll/CoursesFinder
     arguments: ['@Backoffice.Courses.domain.BackofficeCourseRepository']
@@ -35,7 +25,7 @@ services:
 
   Backoffice.Courses.domain.BackofficeCourseRepository:
     class: ../../../../../Contexts/Backoffice/Courses/infrastructure/persistence/MongoBackofficeCourseRepository
-    arguments: ['@Backoffice.Shared.ConnectionManager', '@Mooc.Shared.domain.QueryBus']
+    arguments: ['@Backoffice.Shared.ConnectionManager']
 
   Backoffice.Courses.application.BackofficeCourseCreator:
     class: ../../../../../Contexts/Backoffice/Courses/application/Create/BackofficeCourseCreator

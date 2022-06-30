@@ -1,19 +1,17 @@
-import { MongoClient } from 'mongodb';
-import { CoursesResponse } from '../../../../Mooc/Courses/application/SearchAll/CoursesResponse';
-import { SearchAllCoursesQuery } from '../../../../Mooc/Courses/application/SearchAll/SearchAllCoursesQuery';
-import { QueryBus } from '../../../../Shared/domain/QueryBus';
 import { MongoRepository } from '../../../../Shared/infrastructure/persistence/mongo/MongoRepository';
 import { BackofficeCourse } from '../../domain/BackofficeCourse';
 import { BackofficeCourseRepository } from '../../domain/BackofficeCourseRepository';
+
+interface CourseDocument {
+  _id: string;
+  name: string;
+  duration: string;
+};
 
 export class MongoBackofficeCourseRepository
   extends MongoRepository<BackofficeCourse>
   implements BackofficeCourseRepository
 {
-  constructor(client: Promise<MongoClient>, private readonly queryBus: QueryBus) {
-    super(client);
-  }
-
   public save(course: BackofficeCourse): Promise<void> {
     return this.persist(course.id.value, course);
   }
@@ -23,10 +21,11 @@ export class MongoBackofficeCourseRepository
   }
 
   public async searchAll(): Promise<BackofficeCourse[]> {
-    const courses = await this.queryBus.ask<CoursesResponse>(new SearchAllCoursesQuery());
+    const collection = await this.collection();
+    const documents = await collection.find<CourseDocument>({}).toArray();
 
-    return courses.courses.map(course =>
-      BackofficeCourse.fromPrimitives({ name: course.name, duration: course.duration, id: course.id })
+    return documents.map(document =>
+      BackofficeCourse.fromPrimitives({ name: document.name, duration: document.duration, id: document._id })
     );
   }
 }

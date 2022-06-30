@@ -8,6 +8,13 @@ const mooc_backend = [
   '--require tests/apps/mooc/backend/features/step_definitions/*.steps.ts'
 ].join(' ');
 
+const backoffice_backend = [
+  ...common,
+  'tests/apps/backoffice/backend/features/**/*.feature',
+  '--require tests/apps/backoffice/backend/features/step_definitions/*.steps.ts'
+].join(' ');
+
 module.exports = {
-  mooc_backend
+  mooc_backend,
+  backoffice_backend
 };
