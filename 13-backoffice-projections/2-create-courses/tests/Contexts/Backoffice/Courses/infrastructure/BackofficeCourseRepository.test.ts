@@ -4,7 +4,7 @@ import { BackofficeCourseRepository } from '../../../../../src/Contexts/Backoffi
 import { CourseRepository } from '../../../../../src/Contexts/Mooc/Courses/domain/CourseRepository';
 import { CourseMother } from '../../../Mooc/Courses/domain/CourseMother';
 import { EnvironmentArranger } from '../../../Shared/infrastructure/arranger/EnvironmentArranger';
-
+import { BackofficeCourseMother } from '../domain/BackofficeCourseMother';
 
 const repository: BackofficeCourseRepository = container.get('Backoffice.Courses.domain.BackofficeCourseRepository');
 const moocRepository: CourseRepository = container.get('Mooc.Courses.domain.CourseRepository');
@@ -22,6 +22,15 @@ afterEach(async () => {
 });
 
 describe('BackofficeCourseRepository', () => {
+  describe('#save', () => {
+    it('should be able to persist the same course twice', async () => {
+      const course = BackofficeCourseMother.random();
+
+      await repository.save(course);
+      await repository.save(course);
+    });
+  });
+
   describe('#searchAll', () => {
     it('should return the existing courses', async () => {
       const courses = [CourseMother.random(), CourseMother.random()];

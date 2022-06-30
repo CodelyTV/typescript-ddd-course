@@ -52,6 +52,10 @@ export class Server {
     });
   }
 
+  getHTTPServer() {
+    return this.httpServer;
+  }
+
   async stop(): Promise<void> {
     return new Promise((resolve, reject) => {
       if (this.httpServer) {

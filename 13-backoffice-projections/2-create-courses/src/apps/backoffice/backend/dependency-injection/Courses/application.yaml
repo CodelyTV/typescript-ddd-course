@@ -36,3 +36,13 @@ services:
   Backoffice.Courses.domain.BackofficeCourseRepository:
     class: ../../../../../Contexts/Backoffice/Courses/infrastructure/persistence/MongoBackofficeCourseRepository
     arguments: ['@Backoffice.Shared.ConnectionManager', '@Mooc.Shared.domain.QueryBus']
+
+  Backoffice.Courses.application.BackofficeCourseCreator:
+    class: ../../../../../Contexts/Backoffice/Courses/application/Create/BackofficeCourseCreator
+    arguments: ['@Backoffice.Courses.domain.BackofficeCourseRepository']
+
+  Backoffice.courses.CreateBackofficeCourseOnCourseCreated:
+    class: ../../../../../Contexts/Backoffice/Courses/application/Create/CreateBackofficeCourseOnCourseCreated
+    arguments: ['@Backoffice.Courses.application.BackofficeCourseCreator']
+    tags:
+      - { name: 'domainEventSubscriber' }
