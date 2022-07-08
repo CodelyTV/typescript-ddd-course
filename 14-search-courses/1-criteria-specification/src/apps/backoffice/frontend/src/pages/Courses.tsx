@@ -38,7 +38,7 @@ function Courses() {
 
         <PageSeparator />
 
-        <CourseListing courses={courses} />
+        <CourseListing courses={courses} onFilter={courses => setCourses(courses)} />
       </PageContainer>
     </div>
   );

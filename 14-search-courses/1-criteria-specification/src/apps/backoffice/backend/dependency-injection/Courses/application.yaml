@@ -36,3 +36,13 @@ services:
     arguments: ['@Backoffice.Courses.application.BackofficeCourseCreator']
     tags:
       - { name: 'domainEventSubscriber' }
+
+  Backoffice.courses.application.CoursesByCriteriaSearcher:
+    class: ../../../../../Contexts/Backoffice/Courses/application/SearchByCriteria/CoursesByCriteriaSearcher
+    arguments: ['@Backoffice.Courses.domain.BackofficeCourseRepository']
+
+  Backoffice.courses.SearchCoursesByCriteriaQueryHandler:
+    class: ../../../../../Contexts/Backoffice/Courses/application/SearchByCriteria/SearchCoursesByCriteriaQueryHandler
+    arguments: ['@Backoffice.courses.application.CoursesByCriteriaSearcher']
+    tags:
+      - { name: 'queryHandler' }

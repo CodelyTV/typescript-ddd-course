@@ -1,6 +1,6 @@
 import { Query } from '../../../../Shared/domain/Query';
 import { QueryHandler } from '../../../../Shared/domain/QueryHandler';
-import { BackofficeCoursesResponse } from './BackofficeCoursesResponse';
+import { BackofficeCoursesResponse } from '../BackofficeCoursesResponse';
 import { CoursesFinder } from './CoursesFinder';
 import { SearchAllCoursesQuery } from './SearchAllCoursesQuery';
 
