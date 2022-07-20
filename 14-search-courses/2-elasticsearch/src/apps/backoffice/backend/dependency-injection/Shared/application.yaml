@@ -62,3 +62,14 @@ services:
   Backoffice.Shared.domain.QueryBus:
     class: ../../../../../Contexts/Shared/infrastructure/QueryBus/InMemoryQueryBus
     arguments: ['@Backoffice.Shared.QueryHandlers']
+
+  Backoffice.Shared.ElasticConfig:
+    factory:
+      class: ../../../../../Contexts/Backoffice/Courses/infrastructure/persistence/BackofficeElasticConfigFactory
+      method: 'createConfig'
+
+  Backoffice.Shared.ElasticConnectionManager:
+    factory:
+      class: ../../../../../Contexts/Shared/infrastructure/persistence/elasticsearch/ElasticClientFactory
+      method: 'createClient'
+    arguments: ['backoffice', '@Backoffice.Shared.ElasticConfig']

@@ -1,9 +1,9 @@
 import { NewableClass } from "../../../domain/NewableClass"
-import { ValueObject } from "../../../domain/value-object/ValueObject"
+import { Primitives, ValueObject } from "../../../domain/value-object/ValueObject"
   
-export const ValueObjectTransformer = (ValueObject: NewableClass<ValueObject<any>>) => {
+export const ValueObjectTransformer = <T extends Primitives>(ValueObject: NewableClass<ValueObject<any>>) => {
   return {
-    to: (value: ValueObject<any>): any => value.value,
-    from: (value: any): ValueObject<any> => new ValueObject(value)
+    to: (value: ValueObject<T>): T => value.value,
+    from: (value: T): ValueObject<T> => new ValueObject(value)
   }
 }

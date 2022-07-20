@@ -25,3 +25,11 @@ default: build
 # Build image
 build:
 	docker build -t $(IMAGE_NAME):dev .
+
+# Clean containers
+clean:
+	docker-compose down --rmi local --volumes --remove-orphans
+
+# Start databases containers in background
+start_database:
+	docker-compose up -d mongo elasticsearch rabbitmq
