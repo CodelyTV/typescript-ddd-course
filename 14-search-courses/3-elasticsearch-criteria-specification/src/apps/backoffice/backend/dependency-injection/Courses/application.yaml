@@ -24,14 +24,6 @@ services:
       - { name: 'queryHandler' }
 
   Backoffice.Courses.domain.BackofficeCourseRepository:
-    class: ../../../../../Contexts/Backoffice/Courses/infrastructure/persistence/ProxyBackofficeCourseRepository
-    arguments: ['@Backoffice.Courses.domain.MongoBackofficeCourseRepository', '@Backoffice.Courses.domain.ElasticBackofficeCourseRepository']
-
-  Backoffice.Courses.domain.MongoBackofficeCourseRepository:
-    class: ../../../../../Contexts/Backoffice/Courses/infrastructure/persistence/MongoBackofficeCourseRepository
-    arguments: ['@Backoffice.Shared.ConnectionManager']
-
-  Backoffice.Courses.domain.ElasticBackofficeCourseRepository:
     class: ../../../../../Contexts/Backoffice/Courses/infrastructure/persistence/ElasticBackofficeCourseRepository
     arguments: ['@Backoffice.Shared.ElasticConnectionManager', '@Backoffice.Shared.ElasticConfig']
 

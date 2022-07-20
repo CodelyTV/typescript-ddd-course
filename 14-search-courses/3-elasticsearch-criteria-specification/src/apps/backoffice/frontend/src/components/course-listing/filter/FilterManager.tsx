@@ -14,7 +14,13 @@ function FilterManager({ onFilter }: { onFilter: (courses: Course[]) => void }) 
   const [filters, setFilters] = useState<FilterState[]>([]);
 
   return (
-    <form id="courses-filters" name="filter-courses" className="text-left" action='#'>
+    <form
+      id="courses-filters"
+      name="filter-courses"
+      className="text-left"
+      action="#"
+      onSubmit={e => e.preventDefault()}
+    >
       {filters.map((filter, index) => (
         <Filter
           key={index}
