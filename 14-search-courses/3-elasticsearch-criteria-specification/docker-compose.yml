@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  mongo:
+    image: mongo:5.0.0
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/dev
+    volumes:
+      - ./data/mongo:/data/db:delegated
+    ports:
+      - 27017:27017
+  postgres:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=codely
+      - POSTGRES_USER=codely
+      - POSTGRES_DB=mooc-backend-dev
+    ports:
+      - '5432:5432'
+    restart: always
+  rabbitmq:
+    image: 'rabbitmq:3.8-management'
+    ports:
+      - 5672:5672
+      - 15672:15672
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.9.3
+    container_name: codely-elasticsearch
+    environment:
+      - node.name=codely-elasticsearch
+      - discovery.type=single-node #Elasticsearch forms a single-node cluster
+      - bootstrap.memory_lock=true # might cause the JVM or shell session to exit if it tries to allocate more memory than is available!
+      - 'ES_JAVA_OPTS=-Xms2048m -Xmx2048m'
+    ulimits:
+      memlock:
+        soft: -1 # The memlock soft and hard values configures the range of memory that ElasticSearch will use. Setting this to –1 means unlimited.
+        hard: -1
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    ports:
+      - '9200:9200'
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.8.1
+    container_name: codely-kibana
+    environment:
+      ELASTICSEARCH_URL: http://codely-elasticsearch:9200
+      ELASTICSEARCH_HOSTS: http://codely-elasticsearch:9200
+    ports:
+      - 5601:5601
+
+volumes:
+  node_modules:
+  esdata:
+    driver: local
