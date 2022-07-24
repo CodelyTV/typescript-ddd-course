@@ -5,7 +5,7 @@ import { RabbitMqConnection } from '../../../../Contexts/Shared/infrastructure/E
 import { RabbitMQqueueFormatter } from '../../../../Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMQqueueFormatter';
 import container from '../dependency-injection';
 
-class ConfigureRabbitMQCommand {
+export class ConfigureRabbitMQCommand {
   static async run() {
     const connection = container.get<RabbitMqConnection>('Backoffice.Shared.RabbitMQConnection');
     const nameFormatter = container.get<RabbitMQqueueFormatter>('Backoffice.Shared.RabbitMQQueueFormatter');
@@ -17,15 +17,7 @@ class ConfigureRabbitMQCommand {
     const subscribers = DomainEventSubscribers.from(container).items;
 
     await configurer.configure({ exchange: exchangeSettings.name, subscribers });
+    await connection.close();
   }
 }
 
-ConfigureRabbitMQCommand.run()
-  .then(() => {
-    console.log('RabbitMQ Configuration success');
-    process.exit(0);
-  })
-  .catch(error => {
-    console.log('RabbitMQ Configuration fail', error);
-    process.exit(1);
-  });

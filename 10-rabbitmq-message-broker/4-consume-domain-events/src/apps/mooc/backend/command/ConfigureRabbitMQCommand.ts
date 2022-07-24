@@ -5,7 +5,7 @@ import { RabbitMqConnection } from '../../../../Contexts/Shared/infrastructure/E
 import { RabbitMQqueueFormatter } from '../../../../Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMQqueueFormatter';
 import container from '../dependency-injection';
 
-class ConfigureRabbitMQCommand {
+export class ConfigureRabbitMQCommand {
   static async run() {
     const connection = container.get<RabbitMqConnection>('Mooc.Shared.RabbitMQConnection');
     await connection.connect();
@@ -16,15 +16,6 @@ class ConfigureRabbitMQCommand {
     const exchange = moocConfig.get('rabbitmq').exchangeSettings.name;
 
     await configurer.configure({ exchange, subscribers });
+    await connection.close();
   }
 }
-
-ConfigureRabbitMQCommand.run()
-  .then(() => {
-    console.log('RabbitMQ Configuration success');
-    process.exit(0);
-  })
-  .catch(error => {
-    console.log('RabbitMQ Configuration fail', error);
-    process.exit(1);
-  });

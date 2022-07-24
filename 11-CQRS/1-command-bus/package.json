@@ -22,7 +22,7 @@
     "build:tsc": "tsc -p tsconfig.prod.json",
     "build:di": "copy 'src/**/*.{json,yaml,html,png}' dist/src",
     "build:clean": "rm -r dist; exit 0",
-    "command:mooc:rabbitmq": "NODE_ENV=production ts-node src/apps/mooc/backend/command/ConfigureRabbitMQCommand"
+    "command:mooc:rabbitmq": "NODE_ENV=production ts-node src/apps/mooc/backend/command/runConfigureRabbitMQCommand"
   },
   "dependencies": {
     "@types/amqplib": "^0.8.2",
