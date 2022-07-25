@@ -15,7 +15,7 @@ Feature: Create a new course
     Then the response status code should be 201
     And the response should be empty
 
- Scenario: An ivalid non existing course
+ Scenario: An invalid non existing course
     Given I send a PUT request to "/courses/ef8ac118-8d7f-49cc-abec-78e0d05af80a" with body:
     """
     {
