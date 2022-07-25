@@ -18,10 +18,10 @@ export class Course extends AggregateRoot {
 
   static create(id: CourseId, name: CourseName, duration: CourseDuration): Course {
     const course = new Course(id, name, duration);
-
+ 
     course.record(
       new CourseCreatedDomainEvent({
-        id: course.id.value,
+        aggregateId: course.id.value,
         duration: course.duration.value,
         name: course.name.value
       })

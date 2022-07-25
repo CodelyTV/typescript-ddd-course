@@ -11,8 +11,8 @@ Feature: Obtain the total number of courses
         "id": "c77fa036-cbc7-4414-996b-c6a7a93cae09",
         "type": "course.created",
         "occurred_on": "2019-08-08T08:37:32+00:00",
+        "aggregateId": "8c900b20-e04a-4777-9183-32faab6d2fb5",
         "attributes": {
-          "id": "8c900b20-e04a-4777-9183-32faab6d2fb5",
           "name": "DDD en PHP!",
           "duration": "25 hours"
         },

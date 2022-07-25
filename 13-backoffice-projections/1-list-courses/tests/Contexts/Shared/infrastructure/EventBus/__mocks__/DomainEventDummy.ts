@@ -10,15 +10,13 @@ export class DomainEventDummy extends DomainEvent {
   }
 
   toPrimitives() {
-    return {
-      id: this.aggregateId
-    };
+    return {};
   }
 
-  static fromPrimitives(params: { id: string; attributes: {}; eventId: string; occurredOn: Date }) {
-    const { id, eventId, occurredOn } = params;
+  static fromPrimitives(params: { aggregateId: string; attributes: {}; eventId: string; occurredOn: Date }) {
+    const { aggregateId, eventId, occurredOn } = params;
     return new DomainEventDummy({
-      aggregateId: id,
+      aggregateId,
       eventId,
       occurredOn
     });

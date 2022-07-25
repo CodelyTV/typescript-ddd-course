@@ -3,7 +3,7 @@ import { Uuid } from './value-object/Uuid';
 export abstract class DomainEvent {
   static EVENT_NAME: string;
   static fromPrimitives: (params: {
-    id: string;
+    aggregateId: string;
     eventId: string;
     occurredOn: Date;
     attributes: DomainEventAttributes;
@@ -28,7 +28,7 @@ export abstract class DomainEvent {
 export type DomainEventClass = {
   EVENT_NAME: string;
   fromPrimitives(params: {
-    id: string;
+    aggregateId: string;
     eventId: string;
     occurredOn: Date;
     attributes: DomainEventAttributes;

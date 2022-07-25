@@ -21,7 +21,7 @@ export class Course extends AggregateRoot {
 
     course.record(
       new CourseCreatedDomainEvent({
-        id: course.id.value,
+        aggregateId: course.id.value,
         duration: course.duration.value,
         name: course.name.value
       })

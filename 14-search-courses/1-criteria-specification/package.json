@@ -19,7 +19,7 @@
     "test:unit": "NODE_ENV=test jest",
     "start:mooc:backend": "NODE_ENV=production node dist/src/apps/mooc/backend/start",
     "start:backoffice:backend": "NODE_ENV=production node dist/src/apps/backoffice/backend/start",
-    "test:features": "npm run test:mooc:backend:features",
+    "test:features": "npm run test:mooc:backend:features && npm run test:backoffice:backend:features",
     "test:mooc:backend:features": "NODE_ENV=test cucumber-js -p mooc_backend",
     "test:backoffice:backend:features": "NODE_ENV=test cucumber-js -p backoffice_backend",
     "build": "npm run build:clean && npm run build:tsc && npm run build:di",

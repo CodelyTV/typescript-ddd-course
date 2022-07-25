@@ -1,6 +1,14 @@
 import { DomainEventClass } from '../../domain/DomainEvent';
 import { DomainEventSubscribers } from './DomainEventSubscribers';
 
+type DomainEventJSON = {
+  type: string;
+  aggregateId: string;
+  attributes: string;
+  id: string;
+  occurred_on: string;
+};
+
 export class DomainEventDeserializer extends Map<string, DomainEventClass> {
   static configure(subscribers: DomainEventSubscribers) {
     const mapping = new DomainEventDeserializer();
@@ -17,19 +25,19 @@ export class DomainEventDeserializer extends Map<string, DomainEventClass> {
   }
 
   deserialize(event: string) {
-    const eventData = JSON.parse(event).data;
-    const eventName = eventData.type;
-    const eventClass = super.get(eventName);
+    const eventData = JSON.parse(event).data as DomainEventJSON;
+    const { type, aggregateId, attributes, id, occurred_on } = eventData;
+    const eventClass = super.get(type);
 
     if (!eventClass) {
-      throw Error(`DomainEvent mapping not found for event ${eventName}`);
+      throw Error(`DomainEvent mapping not found for event ${type}`);
     }
 
     return eventClass.fromPrimitives({
-      id: eventData.attributes.id,
-      attributes: eventData.attributes,
-      occurredOn: new Date(eventData.occurred_on),
-      eventId: eventData.id
+      aggregateId,
+      attributes,
+      occurredOn: new Date(occurred_on),
+      eventId: id
     });
   }
 }

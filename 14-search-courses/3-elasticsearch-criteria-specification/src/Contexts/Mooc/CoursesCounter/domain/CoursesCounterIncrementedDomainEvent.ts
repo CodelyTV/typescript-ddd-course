@@ -14,21 +14,19 @@ export class CoursesCounterIncrementedDomainEvent extends DomainEvent {
 
   toPrimitives() {
     return {
-      id: this.aggregateId,
       total: this.total,
-      eventName: CoursesCounterIncrementedDomainEvent.EVENT_NAME
     };
   }
 
   static fromPrimitives(params: {
-    id: string;
+    aggregateId: string;
     attributes: CoursesCounterIncrementedAttributes;
     eventId: string;
     occurredOn: Date;
   }) {
-    const { id, attributes, eventId, occurredOn } = params;
+    const { aggregateId, attributes, eventId, occurredOn } = params;
     return new CoursesCounterIncrementedDomainEvent({
-      aggregateId: id,
+      aggregateId,
       total: attributes.total,
       eventId,
       occurredOn
