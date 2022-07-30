@@ -1,7 +1,7 @@
 import amqplib, { ConsumeMessage } from 'amqplib';
 import { ConnectionSettings } from './ConnectionSettings';
-import { RabbitMQConsumer } from './RabbitMQConsumer';
 import { RabbitMQExchangeNameFormatter } from './RabbitMQExchangeNameFormatter';
+
 export class RabbitMqConnection {
   private connectionSettings: ConnectionSettings;
   private channel?: amqplib.ConfirmChannel;
@@ -66,17 +66,6 @@ export class RabbitMqConnection {
     return args;
   }
 
-  async consume(exchange: string, queue: string, consumer: RabbitMQConsumer) {
-    await this.channel!.consume(queue, (message: ConsumeMessage | null) => {
-      if (message) {
-        const ack = this.getAck(message);
-        const retry = this.getRetry(message, queue, exchange);
-        const deadLetter = this.getDeadLetter(message, queue, exchange);
-        consumer.onMessage({ message, ack, retry, deadLetter });
-      }
-    });
-  }
-
   async deleteQueue(queue: string) {
     return await this.channel!.deleteQueue(queue);
   }
@@ -129,28 +118,31 @@ export class RabbitMqConnection {
     return await this.connection?.close();
   }
 
-  getAck(message: ConsumeMessage) {
-    return () => {
-      this.channel!.ack(message);
-    };
+  async consume(queue: string, onMessage: (message: ConsumeMessage) => {}) {
+    await this.channel!.consume(queue, (message: ConsumeMessage | null) => {
+      if (!message) {
+        return;
+      }
+      onMessage(message);
+    });
   }
 
-  getRetry(message: ConsumeMessage, queue: string, exchange: string) {
-    return async () => {
-      const retryExchange = RabbitMQExchangeNameFormatter.retry(exchange);
-      const options = this.getMessageOptions(message);
-
-      return await this.publish({ exchange: retryExchange, routingKey: queue, content: message.content, options });
-    };
+  ack(message: ConsumeMessage) {
+    this.channel!.ack(message);
   }
 
-  getDeadLetter(message: ConsumeMessage, queue: string, exchange: string) {
-    return async () => {
-      const deadLetterExchange = RabbitMQExchangeNameFormatter.deadLetter(exchange);
-      const options = this.getMessageOptions(message);
+  async retry(message: ConsumeMessage, queue: string, exchange: string) {
+    const retryExchange = RabbitMQExchangeNameFormatter.retry(exchange);
+    const options = this.getMessageOptions(message);
 
-      return await this.publish({ exchange: deadLetterExchange, routingKey: queue, content: message.content, options });
-    };
+    return await this.publish({ exchange: retryExchange, routingKey: queue, content: message.content, options });
+  }
+
+  async deadLetter(message: ConsumeMessage, queue: string, exchange: string) {
+    const deadLetterExchange = RabbitMQExchangeNameFormatter.deadLetter(exchange);
+    const options = this.getMessageOptions(message);
+
+    return await this.publish({ exchange: deadLetterExchange, routingKey: queue, content: message.content, options });
   }
 
   private getMessageOptions(message: ConsumeMessage) {

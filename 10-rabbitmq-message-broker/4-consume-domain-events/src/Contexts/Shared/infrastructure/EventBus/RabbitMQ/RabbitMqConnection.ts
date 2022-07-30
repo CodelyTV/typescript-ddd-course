@@ -1,7 +1,7 @@
 import amqplib, { ConsumeMessage } from 'amqplib';
 import { ConnectionSettings } from './ConnectionSettings';
 import { ExchangeSetting } from './ExchangeSetting';
-import { RabbitMQConsumer } from './RabbitMQConsumer';
+
 export class RabbitMqConnection {
   protected connectionSettings: ConnectionSettings;
 
@@ -34,18 +34,6 @@ export class RabbitMqConnection {
     for (const routingKey of params.routingKeys) {
       await this.channel!.bindQueue(params.name, params.exchange, routingKey);
     }
-  }
-
-  async consume(queue: string, consumer: RabbitMQConsumer) {
-    await this.channel!.consume(queue, (message: ConsumeMessage | null) => {
-      if (!message) {
-        return;
-      }
-
-      const ack = this.getAck(message);
-      const noAck = this.getNoAck(message);
-      consumer.onMessage({ message, ack, noAck });
-    });
   }
 
   async deleteQueue(queue: string) {
@@ -99,15 +87,20 @@ export class RabbitMqConnection {
     return await this.connection?.close();
   }
 
-  private getAck(message: ConsumeMessage) {
-    return () => {
-      this.channel!.ack(message);
-    };
+  async consume(queue: string, onMessage: (message: ConsumeMessage) => {}) {
+    await this.channel!.consume(queue, (message: ConsumeMessage | null) => {
+      if (!message) {
+        return;
+      }
+      onMessage(message);
+    });
   }
 
-  private getNoAck(message: ConsumeMessage) {
-    return () => {
-      this.channel!.nack(message);
-    };
+  ack(message: ConsumeMessage) {
+    this.channel!.ack(message);
+  }
+
+  noAck(message: ConsumeMessage) {
+    this.channel!.nack(message);
   }
 }

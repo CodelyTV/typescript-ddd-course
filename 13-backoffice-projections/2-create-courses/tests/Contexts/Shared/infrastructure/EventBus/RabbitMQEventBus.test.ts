@@ -134,13 +134,14 @@ describe('RabbitMQEventBus test', () => {
       await connection.deleteQueue(queueNameFormatter.formatDeadLetter(dummySubscriber));
     }
 
+
     async function assertDeadLetter(events: Array<DomainEvent>) {
       const deadLetterQueue = queueNameFormatter.formatDeadLetter(dummySubscriber);
       const deadLetterSubscriber = new DomainEventSubscriberDummy();
       const deadLetterSubscribers = new DomainEventSubscribers([dummySubscriber]);
       const deserializer = DomainEventDeserializer.configure(deadLetterSubscribers);
-      const consumer = new RabbitMQConsumer({ subscriber: deadLetterSubscriber, deserializer, maxRetries: 3 });
-      await connection.consume(exchange, deadLetterQueue, consumer);
+      const consumer = new RabbitMQConsumer({ subscriber: deadLetterSubscriber, deserializer, connection, maxRetries: 3, queueName: deadLetterQueue, exchange });
+      await connection.consume(deadLetterQueue, consumer.onMessage.bind(consumer));
 
       await deadLetterSubscriber.assertConsumedEvents(events);
     }

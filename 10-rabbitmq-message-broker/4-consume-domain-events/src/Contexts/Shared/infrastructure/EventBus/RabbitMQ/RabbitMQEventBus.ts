@@ -1,12 +1,12 @@
 import { DomainEvent } from '../../../domain/DomainEvent';
 import { EventBus } from '../../../domain/EventBus';
-import { DomainEventSubscribers } from '../DomainEventSubscribers';
-import { DomainEventJsonSerializer } from '../DomainEventJsonSerializer';
-import { RabbitMqConnection } from './RabbitMqConnection';
-import { DomainEventFailoverPublisher } from '../DomainEventFailoverPublisher/DomainEventFailoverPublisher';
-import { RabbitMQqueueFormatter } from './RabbitMQqueueFormatter';
-import { RabbitMQConsumer } from './RabbitMQConsumer';
 import { DomainEventDeserializer } from '../DomainEventDeserializer';
+import { DomainEventFailoverPublisher } from '../DomainEventFailoverPublisher/DomainEventFailoverPublisher';
+import { DomainEventJsonSerializer } from '../DomainEventJsonSerializer';
+import { DomainEventSubscribers } from '../DomainEventSubscribers';
+import { RabbitMqConnection } from './RabbitMqConnection';
+import { RabbitMQConsumerFactory } from './RabbitMQConsumerFactory';
+import { RabbitMQqueueFormatter } from './RabbitMQqueueFormatter';
 
 export class RabbitMQEventBus implements EventBus {
   private failoverPublisher: DomainEventFailoverPublisher;
@@ -29,12 +29,13 @@ export class RabbitMQEventBus implements EventBus {
 
   async addSubscribers(subscribers: DomainEventSubscribers): Promise<void> {
     const deserializer = DomainEventDeserializer.configure(subscribers);
+    const consumerFactory = new RabbitMQConsumerFactory(deserializer, this.connection);
 
     for (const subscriber of subscribers.items) {
       const queueName = this.queueNameFormatter.format(subscriber);
-      const rabbitMQConsumer = new RabbitMQConsumer(subscriber, deserializer);
+      const rabbitMQConsumer = consumerFactory.build(subscriber);
 
-      await this.connection.consume(queueName, rabbitMQConsumer);
+      await this.connection.consume(queueName, rabbitMQConsumer.onMessage.bind(rabbitMQConsumer));
     }
   }
 
@@ -66,3 +67,5 @@ export class RabbitMQEventBus implements EventBus {
     return Buffer.from(eventPrimitives);
   }
 }
+
+
