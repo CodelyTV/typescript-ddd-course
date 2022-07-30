@@ -39,6 +39,14 @@ services:
     class: ../../../../../Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMQqueueFormatter
     arguments: ['mooc']
 
+  Mooc.Shared.RabbitMQConfigurer:
+    class: ../../../../../Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMQConfigurer
+    arguments: ["@Mooc.Shared.RabbitMQConnection", "@Mooc.Shared.RabbitMQQueueFormatter"]
+
   Mooc.Shared.DomainEventFailoverPublisher:
     class: ../../../../../Contexts/Shared/infrastructure/EventBus/DomainEventFailoverPublisher/DomainEventFailoverPublisher
     arguments: ['@Mooc.Shared.ConnectionManager']
+
+  Mooc.Shared.RabbitMQConfigurer:
+    class: ../../../../../Contexts/Shared/infrastructure/EventBus/RabbitMQ/RabbitMQConfigurer
+    arguments: ["@Mooc.Shared.RabbitMQConnection", "@Mooc.Shared.RabbitMQQueueFormatter"]
